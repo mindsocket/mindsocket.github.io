@@ -1,3 +1,10 @@
 [[imports]]
 disable = false
 path = "github.com/nunocoracao/blowfish/v2"
+
+[[imports]]
+disable = false
+path = "github.com/mindsocket/structured-context"
+  [[imports.mounts]]
+  source = "docs"
+  target = "content/docs/structured-context"

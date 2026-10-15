@@ -1,2 +1,4 @@
-github.com/nunocoracao/blowfish/v2 v2.98.0 h1:2k/f19NwAlhEIq08WOOgbYB4LlzWF2YEhoDoflSH0eU=
-github.com/nunocoracao/blowfish/v2 v2.98.0/go.mod h1:4SkMc+Ht8gpQCwArqiHMBDP3soxi2OWuAhVney+cuyk=
+github.com/mindsocket/structured-context v0.12.0 h1:0rVltqLRGb8Dtov9ugN8M0SO+Sc4R/tkiUEmKkMqFbU=
+github.com/mindsocket/structured-context v0.12.0/go.mod h1:EGQXB4xy2qLpX+EVMxV2lsmebJgzVBF4OWI78bN0z8s=
+github.com/nunocoracao/blowfish/v2 v2.106.0 h1:eIEF+HITN4VdKyZjYWSlfXyH6uCHCq4MMWu616MDWUA=
+github.com/nunocoracao/blowfish/v2 v2.106.0/go.mod h1:4SkMc+Ht8gpQCwArqiHMBDP3soxi2OWuAhVney+cuyk=
