@@ -17,11 +17,11 @@ title = "mindsocket"
 [params.author]
   name = "Roger Barnes"
   # image = "img/profile.jpg"   # TODO: add a headshot to assets/img/
-  # headline = "TODO"
-  # bio = "TODO"
+  headline = "AI product leader and hands-on builder"
+  bio = "Over twenty years of building software and leading product: an enterprise CRM shipped daily at SAS, a startup as CTO, Bitbucket and DevOps products at Atlassian, data and AI products at Culture Amp. This site collects what I've built, with an emphasis on recent agentic AI work."
   links = [
     { github = "https://github.com/mindsocket" },
-    # { linkedin = "https://linkedin.com/in/TODO" },
+    { linkedin = "https://linkedin.com/in/rbarnes/" },
   ]
 
 # [params.author.template]

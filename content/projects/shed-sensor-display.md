@@ -1,6 +1,7 @@
 ---
 title: "Shed Sensor Display"
 description: "ESP32-S3 sensor display for shed and brewing monitoring"
+draft: true
 tags: ["esphome", "home-automation", "hardware", "homebrewing"]
 ---
 
