@@ -6,4 +6,4 @@ tags: ["python", "whisper", "audio"]
 
 A two-tier transcription pipeline for podcast episodes from [Podcast Addict](https://podcastaddict.com) backups. GPU-accelerated transcription via Google Colab, with local metadata processing and markdown generation.
 
-Source is private.
+Soloware, source unavailable.

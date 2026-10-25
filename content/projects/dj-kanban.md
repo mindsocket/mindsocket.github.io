@@ -6,7 +6,7 @@ tags: ["typescript", "audio", "react"]
 
 A browser-based DJ mixing application. Manages a track queue using a kanban-style workflow — tracks move through cue, playing, and played states. Built for personal use.
 
-Source is private.
+Soloware, source unavailable.
 
 ## DJ Kanban in action
 
