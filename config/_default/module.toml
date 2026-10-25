@@ -8,3 +8,7 @@ path = "github.com/mindsocket/structured-context"
   [[imports.mounts]]
   source = "docs"
   target = "content/docs/structured-context"
+  files = ["! schema-dialect-update-proposal.md", "! torres-alignment-research.md"]
+  [[imports.mounts]]
+  source = "README.md"
+  target = "content/docs/structured-context/_index.md"

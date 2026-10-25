@@ -1,0 +1,22 @@
+{{/* Sidebar for a docs project: the project's index page plus its children, in weight order */}}
+{{ $project := .CurrentSection }}
+{{ $page := . }}
+{{ if not $project.Parent.IsHome }}
+<nav class="not-prose order-first mb-6 text-sm print:hidden lg:me-8 lg:mb-0 lg:w-56 lg:min-w-56 lg:shrink-0" aria-label="{{ $project.Title }}">
+  <details class="lg:sticky lg:top-10 lg:[&>summary]:hidden" open>
+    <summary class="mb-2 cursor-pointer font-semibold text-neutral-800 dark:text-neutral-200">{{ $project.Title }}</summary>
+    <ul class="space-y-1 border-s border-neutral-300 dark:border-neutral-600">
+      {{ range (slice $project | append $project.Pages.ByWeight) }}
+        {{ $active := eq .RelPermalink $page.RelPermalink }}
+        <li>
+          <a href="{{ .RelPermalink }}"
+            class="-ms-px block border-s ps-3 py-0.5 {{ if $active }}border-primary-500 font-semibold text-primary-600 dark:text-primary-400{{ else }}border-transparent text-neutral-600 hover:border-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100{{ end }}"
+            {{ if $active }}aria-current="page"{{ end }}>
+            {{- if eq . $project }}Overview{{ else }}{{ .Title }}{{ end -}}
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  </details>
+</nav>
+{{ end }}
