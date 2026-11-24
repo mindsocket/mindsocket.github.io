@@ -7,6 +7,10 @@ tags: ["typescript", "markdown", "schemas", "agents", "claude-code", "obsidian"]
 
 Keep your thinking clear and your content clean. structured-context gives a folder of markdown notes a schema, so people and AI agents can build up a body of thinking together and keep it coherent: a business strategy that ladders from vision and mission down to goals, opportunities and initiatives; a playbook that stays well documented and can be seen whole; or a knowledge wiki that an agent keeps growing.
 
+![Claude Code with the structured-context mod: validation checks in the chat, a space status line, and a pane showing the space as a tree](/structured-context/claude-mod.png)
+
+![Obsidian map view of a playbook: phases containing activities, each with the capabilities it needs](/structured-context/obsidian-map-view.png)
+
 Structure catches the mechanical drift: missing fields, broken links, notes that connect to nothing. The more interesting part is judgement. Rules can ask a model whether the thinking holds together, so the tool points out inconsistencies and gaps in your reasoning, not just in your formatting.
 
 ## The core
