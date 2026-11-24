@@ -7,7 +7,7 @@ tags: ["hermes", "python", "agents", "plugin"]
 
 A [Hermes](https://hermes-agent.nousresearch.com/) plugin that lets an agent publish small interactive pages (forms, review lists, dashboards), open them by link on a phone or desktop over a tailnet, persist what you enter, and read it back or have it pushed into the chat that created the page.
 
-Inspired by Claude artifacts. The page-side API follows Claude's artifact runtime (`window.claude.use("db")` and friends), cut down to one user, so a page written for Claude can move across when it sticks to the capabilities implemented.
+Inspired by Claude artifacts, with a compatible page-side API, so many pages written for Claude work unchanged.
 
 ## How it looks
 
@@ -24,10 +24,6 @@ Pressing Send notifies the chat that created the page. The agent reads your mark
 The Hermes dashboard tab lists every artifact with a live preview.
 
 ![Live Artifacts dashboard tab: list of artifacts beside a preview of the call review page](/live-artifacts/dashboard.png)
-
-- Agent tools, an aiohttp listener inside the Hermes gateway, SQLite persistence, and a dashboard tab.
-- Pages run in a CSP sandbox with per-artifact API tokens.
-- Tested with pytest and Playwright end-to-end tests.
 
 [Hermes plugin marketplace](https://hermes-agent.nousresearch.com/marketplace/live-artifacts) · [Source on GitHub](https://github.com/mindsocket/hermes-live-artifacts)
 

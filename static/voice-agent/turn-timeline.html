@@ -51,7 +51,6 @@
 <div class="chart" id="chart"></div>
 <div class="axis" id="axis"></div>
 <div class="caption" id="caption">Pick a scenario and press Play.</div>
-<p class="small">Timings are the defaults, illustrative rather than measured from a particular call.</p>
 <script>
   // lane order top to bottom
   const LANES = [["you","You"],["bot","Voice bot"],["hermes","Hermes"],["hear","You hear"]];
@@ -60,7 +59,7 @@
     a: { T: 12, events: [
       {l:"you", t0:0, t1:2.5, label:"speaking", text:"You speak."},
       {l:"bot", t0:2.5, t1:4.5, label:"silence 2 s", text:"The bot waits for 2.0 s of silence before treating the speech as a fragment."},
-      {l:"bot", t0:4.5, label:"transcript", text:"Whisper returns the fragment's text (filler words are stripped).", dy:24},
+      {l:"bot", t0:4.5, label:"transcript", text:"Whisper returns the fragment's text.", dy:24},
       {l:"hear", t0:4.5, label:"660 Hz: heard you", text:"A short tone says the turn was picked up."},
       {l:"bot", t0:4.5, t1:5.3, label:"hold", text:"A short hold (0.8 s), in case more is coming. In parallel, the completeness check asks whether the speaker has finished.", dy:0},
       {l:"bot", t0:5.3, label:"send", text:"Released: the text goes to Hermes as one turn.", dy:44},
@@ -90,7 +89,7 @@
       {l:"bot", t0:8.2, t1:10.2, label:"silence 2 s", text:"Silence, then a fragment, as usual."},
       {l:"bot", t0:10.2, t1:11, label:"hold", text:"Short hold, then release.", dy:0},
       {l:"bot", t0:11, label:"steer", text:"A tool call is in progress, so the speech is sent as a steer that the agent reads before its next model request.", dy:24},
-      {l:"hermes", t0:13.2, label:"steer read", text:"When the tool finishes, the agent reads the steer and adjusts. If the model had been writing its final reply instead, a steer would have gone unread, so the speech would queue as the next turn.", dy:44},
+      {l:"hermes", t0:13.2, label:"steer read", text:"When the tool finishes, the agent reads the steer and adjusts.", dy:44},
       {l:"hear", t0:13.8, t1:16, label:"reply, spoken", text:"The reply reflects the extra instruction."},
       {l:"hear", t0:16.2, label:"550 Hz: end", text:"End of reply chirp.", dy:28},
     ]},

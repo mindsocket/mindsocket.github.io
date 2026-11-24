@@ -13,6 +13,5 @@ This is my extended fork of [renanvieira/brewfather-mcp](https://github.com/rena
 - Brew tracking and device readings, with delta calculations between measurements and timing calculations for active brew steps.
 - An HTTP/SSE runner alongside stdio, and `uvx` installation straight from the repository.
 - A CLI for managing inventory and recipes without an MCP client, and a Claude skill that teaches the assistant how to brew with it.
-- A much larger test suite.
 
 [![brewfather-mcp](https://github-readme-stats.vercel.app/api/pin/?username=mindsocket&repo=brewfather-mcp)](https://github.com/mindsocket/brewfather-mcp)

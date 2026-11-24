@@ -41,7 +41,7 @@ The voice agent starts jobs, sends prompts to existing sessions, or watches busy
 
 ## The satellite
 
-A reTerminal Sticky (ESP32-S3, e-ink, microphone) running ESPHome. Hold the button to talk; replies are written for reading, in forty words or fewer. Both clients share the same voice sessions, so a conversation can start on the phone and continue at the desk.
+A reTerminal Sticky (ESP32-S3, e-ink, microphone) running ESPHome. Hold the button to talk; replies are written to be read at a glance. Both clients share the same voice sessions, so a conversation can start on the phone and continue at the desk.
 
 <iframe src="/voice-agent/satellite-screen.html" title="Mock of the satellite screen" loading="lazy" style="width:100%;height:470px;border:1px solid rgba(128,128,128,.3);border-radius:8px"></iframe>
 
