@@ -1,4 +1,5 @@
 ---
+weight: 120
 title: "WFH Tax Calendar Calculator"
 description: "Calculate work-from-home hours for Australian tax using Google Calendar"
 tags: ["python", "tax", "pyscript"]

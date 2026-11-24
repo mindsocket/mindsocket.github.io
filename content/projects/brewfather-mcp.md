@@ -1,4 +1,5 @@
 ---
+weight: 60
 title: "brewfather-mcp"
 description: "MCP server and CLI for Brewfather homebrewing software"
 tags: ["homebrewing", "mcp", "python", "claude"]

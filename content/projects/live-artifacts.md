@@ -1,4 +1,5 @@
 ---
+weight: 30
 title: "live-artifacts"
 description: "Interactive HTML pages for Hermes agents, with persisted input the agent can read back"
 tags: ["hermes", "python", "agents", "plugin"]
@@ -28,6 +29,6 @@ The Hermes dashboard tab lists every artifact with a live preview.
 - Pages run in a CSP sandbox with per-artifact API tokens.
 - Tested with pytest and Playwright end-to-end tests.
 
-[Source on GitHub](https://github.com/mindsocket/hermes-live-artifacts)
+[Hermes plugin marketplace](https://hermes-agent.nousresearch.com/marketplace/live-artifacts) · [Source on GitHub](https://github.com/mindsocket/hermes-live-artifacts)
 
 [![live-artifacts](https://github-readme-stats.vercel.app/api/pin/?username=mindsocket&repo=hermes-live-artifacts)](https://github.com/mindsocket/hermes-live-artifacts)

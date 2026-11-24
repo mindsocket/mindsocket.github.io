@@ -1,4 +1,5 @@
 ---
+weight: 90
 title: "me.next"
 description: "Career and professional development tracker"
 tags: ["react", "typescript"]

@@ -1,4 +1,5 @@
 ---
+weight: 70
 title: "chrome-open-tabs"
 description: "Read your open Chrome/Arc tabs from Claude Code"
 tags: ["claude", "mcp", "typescript"]

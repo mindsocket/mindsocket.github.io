@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anatomy of a spoken turn</title>
+<style>
+  :root { --bg:#ffffff; --fg:#1f2430; --muted:#5d6577; --line:#d9dde6; --card:#f5f7fb;
+          --you:#2b6cb0; --bot:#7b4bb7; --hermes:#1f7a52; --hear:#b8590f; --accent:#2b6cb0; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1b1f2a; --fg:#e6e9f0; --muted:#9aa3b5; --line:#343b4d; --card:#232938;
+          --you:#7ab3ef; --bot:#c0a0ee; --hermes:#6fd0a0; --hear:#f0a868; --accent:#7ab3ef; } }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:14px 16px; background:var(--bg); color:var(--fg); font:14px/1.4 system-ui, sans-serif; }
+  .bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:10px; }
+  button { font:inherit; color:var(--fg); background:var(--card); border:1px solid var(--line); border-radius:6px; padding:6px 12px; cursor:pointer; }
+  button[aria-pressed="true"] { background:var(--accent); color:var(--bg); border-color:var(--accent); }
+  button:focus-visible { outline:3px solid var(--fg); outline-offset:2px; }
+  .spacer { flex:1; }
+  .chart { position:relative; margin-left:74px; }
+  .lane { position:relative; height:64px; border-top:1px solid var(--line); }
+  .lane:last-of-type { border-bottom:1px solid var(--line); }
+  .lane-name { position:absolute; left:-74px; top:6px; width:68px; font-weight:600; font-size:12px; color:var(--muted); }
+  .ev { position:absolute; font-size:11px; line-height:1.2; opacity:0; transition:opacity .25s; }
+  .ev.on { opacity:1; }
+  .ev.span { height:20px; border-radius:4px; padding:2px 5px; color:var(--bg); white-space:nowrap; overflow:hidden; text-overflow:clip; }
+  .ev.dot { width:0; }
+  .ev.dot::before { content:""; position:absolute; left:-5px; top:2px; width:10px; height:10px; transform:rotate(45deg); background:currentColor; }
+  .ev.dot span { position:absolute; left:8px; top:0; white-space:nowrap; color:var(--fg); }
+  .you { background:var(--you); color:var(--you); } .span.you { color:var(--bg); }
+  .bot { background:var(--bot); color:var(--bot); } .span.bot { color:var(--bg); }
+  .hermes { background:var(--hermes); color:var(--hermes); } .span.hermes { color:var(--bg); }
+  .hear { background:var(--hear); color:var(--hear); } .span.hear { color:var(--bg); }
+  .dot.you, .dot.bot, .dot.hermes, .dot.hear { background:none; }
+  .ghost { opacity:.45 !important; background:repeating-linear-gradient(45deg, transparent 0 4px, rgba(128,128,128,.35) 4px 8px); }
+  .playhead { position:absolute; top:0; bottom:0; width:2px; background:var(--fg); opacity:.6; left:0; pointer-events:none; }
+  .axis { position:relative; height:18px; margin-left:74px; font-size:11px; color:var(--muted); }
+  .axis span { position:absolute; transform:translateX(-50%); }
+  .caption { margin-top:10px; min-height:44px; padding:8px 10px; background:var(--card); border:1px solid var(--line); border-radius:8px; }
+  .small { color:var(--muted); font-size:12px; margin-top:6px; }
+  @media (max-width:520px) { .ev { font-size:10px; } .lane { height:72px; } }
+</style>
+</head>
+<body>
+<div class="bar" role="group" aria-label="Scenario">
+  <button data-s="a" aria-pressed="true">Finished thought</button>
+  <button data-s="b" aria-pressed="false">Trails off, then continues</button>
+  <button data-s="c" aria-pressed="false">Speaking mid-run</button>
+  <span class="spacer"></span>
+  <button id="play">Play</button>
+</div>
+<div class="chart" id="chart"></div>
+<div class="axis" id="axis"></div>
+<div class="caption" id="caption">Pick a scenario and press Play.</div>
+<p class="small">Timings are the defaults, illustrative rather than measured from a particular call.</p>
+<script>
+  // lane order top to bottom
+  const LANES = [["you","You"],["bot","Voice bot"],["hermes","Hermes"],["hear","You hear"]];
+  // event: lane, t0, t1 (span) or none (dot), label, text (caption), dy (vertical offset px), ghost
+  const SCEN = {
+    a: { T: 12, events: [
+      {l:"you", t0:0, t1:2.5, label:"speaking", text:"You speak."},
+      {l:"bot", t0:2.5, t1:4.5, label:"silence 2 s", text:"The bot waits for 2.0 s of silence before treating the speech as a fragment."},
+      {l:"bot", t0:4.5, label:"transcript", text:"Whisper returns the fragment's text (filler words are stripped).", dy:24},
+      {l:"hear", t0:4.5, label:"660 Hz: heard you", text:"A short tone says the turn was picked up."},
+      {l:"bot", t0:4.5, t1:5.3, label:"hold", text:"A short hold (0.8 s), in case more is coming. In parallel, the completeness check asks whether the speaker has finished.", dy:0},
+      {l:"bot", t0:5.3, label:"send", text:"Released: the text goes to Hermes as one turn.", dy:44},
+      {l:"hermes", t0:5.3, t1:11, label:"run", text:"Hermes starts a run."},
+      {l:"hermes", t0:6.5, t1:8, label:"tool", text:"The agent calls a tool.", dy:22},
+      {l:"hear", t0:6.5, label:"“list”", text:"A tool word (or a chirp) says the agent is using a tool.", dy:28},
+      {l:"hear", t0:8.3, t1:10.5, label:"reply, spoken", text:"The reply is spoken sentence by sentence once the text arrives."},
+      {l:"hear", t0:10.6, label:"550 Hz: end", text:"A chirp marks the end of the reply.", dy:28},
+    ]},
+    b: { T: 16, events: [
+      {l:"you", t0:0, t1:2.5, label:"“…and maybe we could”", text:"You speak, and the sentence trails off."},
+      {l:"bot", t0:2.5, t1:4.5, label:"silence 2 s", text:"Two seconds of silence, then a fragment."},
+      {l:"hear", t0:4.5, label:"660 Hz", text:"Heard-you tone."},
+      {l:"bot", t0:4.5, t1:5.2, label:"hold", ghost:true, text:"The text trails off, so the hold is 3.0 s rather than 0.8 s. It is cancelled below because you carry on."},
+      {l:"you", t0:5.2, t1:6.5, label:"“…use the other one”", text:"You carry on before the hold runs out. The new fragment cancels the hold and re-arms it."},
+      {l:"bot", t0:6.5, t1:8.5, label:"silence 2 s", text:"Another two seconds of silence."},
+      {l:"bot", t0:8.5, t1:9.3, label:"hold", text:"This time the text is complete: the short hold applies.", dy:0},
+      {l:"bot", t0:9.3, label:"send both", text:"Both fragments go to Hermes as a single turn.", dy:44},
+      {l:"hermes", t0:9.3, t1:15, label:"run", text:"Hermes starts a run."},
+      {l:"hear", t0:10.5, t1:13.2, label:"reply, spoken", text:"Reply follows as before."},
+      {l:"hear", t0:13.4, label:"550 Hz: end", text:"End of reply chirp.", dy:28},
+    ]},
+    c: { T: 18, events: [
+      {l:"hermes", t0:0, t1:16, label:"run in flight", text:"Hermes is already working on an earlier turn."},
+      {l:"hermes", t0:0.5, t1:13, label:"long tool call", dy:22, text:"A long tool call is in progress, so a model request is still to come."},
+      {l:"you", t0:7, t1:8.2, label:"“also check the logs”", text:"You speak while the tool call is running."},
+      {l:"bot", t0:8.2, t1:10.2, label:"silence 2 s", text:"Silence, then a fragment, as usual."},
+      {l:"bot", t0:10.2, t1:11, label:"hold", text:"Short hold, then release.", dy:0},
+      {l:"bot", t0:11, label:"steer", text:"A tool call is in progress, so the speech is sent as a steer that the agent reads before its next model request.", dy:24},
+      {l:"hermes", t0:13.2, label:"steer read", text:"When the tool finishes, the agent reads the steer and adjusts. If the model had been writing its final reply instead, a steer would have gone unread, so the speech would queue as the next turn.", dy:44},
+      {l:"hear", t0:13.8, t1:16, label:"reply, spoken", text:"The reply reflects the extra instruction."},
+      {l:"hear", t0:16.2, label:"550 Hz: end", text:"End of reply chirp.", dy:28},
+    ]},
+  };
+  const chart = document.getElementById("chart"), axis = document.getElementById("axis"), caption = document.getElementById("caption");
+  const playBtn = document.getElementById("play");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let cur = "a", raf = 0, els = [], head;
+
+  function build() {
+    cancelAnimationFrame(raf);
+    const sc = SCEN[cur];
+    chart.innerHTML = ""; axis.innerHTML = ""; els = [];
+    for (const [k, name] of LANES) {
+      const lane = document.createElement("div"); lane.className = "lane"; lane.dataset.lane = k;
+      const n = document.createElement("div"); n.className = "lane-name"; n.textContent = name; lane.append(n);
+      chart.append(lane);
+    }
+    for (const ev of sc.events) {
+      const lane = chart.querySelector('[data-lane="' + ev.l + '"]');
+      const e = document.createElement("div");
+      e.className = "ev " + ev.l + " " + (ev.t1 ? "span" : "dot") + (ev.ghost ? " ghost" : "");
+      e.style.left = (ev.t0 / sc.T * 100) + "%";
+      e.style.top = (4 + (ev.dy || 0)) + "px";
+      if (ev.t1) { e.style.width = ((ev.t1 - ev.t0) / sc.T * 100) + "%"; e.textContent = ev.label; e.title = ev.label; }
+      else { const s = document.createElement("span"); s.textContent = ev.label; e.append(s); }
+      lane.append(e); els.push({ ev, e });
+    }
+    head = document.createElement("div"); head.className = "playhead"; chart.append(head);
+    for (let t = 0; t <= sc.T; t += 2) { const s = document.createElement("span"); s.style.left = (t / sc.T * 100) + "%"; s.textContent = t + "s"; axis.append(s); }
+    head.style.display = reduce ? "none" : "";
+    if (reduce) { els.forEach(x => x.e.classList.add("on")); caption.textContent = "Scenario shown in full. " + sc.events.map(x => x.text).join(" "); playBtn.hidden = true; }
+    else { caption.textContent = "Press Play."; playBtn.hidden = false; playBtn.textContent = "Play"; }
+  }
+  function play() {
+    cancelAnimationFrame(raf);
+    const sc = SCEN[cur]; els.forEach(x => x.e.classList.remove("on"));
+    const speed = 1.6; // seconds of timeline per real second
+    const start = performance.now(); let last = null;
+    playBtn.textContent = "Replay";
+    (function frame(now) {
+      const t = (now - start) / 1000 * speed;
+      head.style.left = Math.min(t / sc.T, 1) * 100 + "%";
+      for (const x of els) if (t >= x.ev.t0 && !x.e.classList.contains("on")) { x.e.classList.add("on"); last = x.ev; caption.textContent = x.ev.text; }
+      if (t < sc.T) raf = requestAnimationFrame(frame);
+    })(start);
+  }
+  document.querySelectorAll("[data-s]").forEach(b => b.addEventListener("click", () => {
+    cur = b.dataset.s;
+    document.querySelectorAll("[data-s]").forEach(o => o.setAttribute("aria-pressed", String(o === b)));
+    build();
+  }));
+  playBtn.addEventListener("click", play);
+  build();
+</script>
+</body>
+</html>

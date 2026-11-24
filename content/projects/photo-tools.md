@@ -1,4 +1,5 @@
 ---
+weight: 130
 title: "Photo Tools"
 description: "Photography utilities including gradient filter and panorama scripting tools"
 draft: true

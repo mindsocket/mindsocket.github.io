@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Satellite screen mock</title>
+<style>
+  :root { --bg:#ffffff; --fg:#1f2430; --muted:#5d6577; --line:#d9dde6; --card:#f5f7fb; --accent:#2b6cb0; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1b1f2a; --fg:#e6e9f0; --muted:#9aa3b5; --line:#343b4d; --card:#232938; --accent:#7ab3ef; } }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:14px 16px; background:var(--bg); color:var(--fg); font:14px/1.4 system-ui, sans-serif; }
+  .bar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+  button { font:inherit; color:var(--fg); background:var(--card); border:1px solid var(--line); border-radius:6px; padding:6px 12px; cursor:pointer; }
+  button[aria-pressed="true"] { background:var(--accent); color:var(--bg); border-color:var(--accent); }
+  button:focus-visible { outline:3px solid var(--fg); outline-offset:2px; }
+  /* Paper-white panel in both themes: it stands for the e-ink display, not the page. */
+  .screen { width:100%; max-width:560px; aspect-ratio:3/2; margin:0 auto; background:#eceae2; color:#111; border:10px solid #2a2d36; border-radius:14px;
+            padding:14px 16px; display:flex; flex-direction:column; font-family:ui-monospace, Menlo, monospace; }
+  .prompt { font-size:15px; line-height:1.35; border-bottom:1px solid #999; padding-bottom:6px; min-height:2.8em; }
+  .reply { font-size:15px; line-height:1.35; flex:1; padding-top:8px; overflow:hidden; }
+  .footer { font-size:12px; line-height:1.3; border-top:1px solid #999; padding-top:6px; min-height:2.6em; }
+  .center { margin:auto; text-align:center; font-size:16px; }
+  .small { color:var(--muted); font-size:12px; margin:10px auto 0; max-width:560px; }
+</style>
+</head>
+<body>
+<div class="bar" role="group" aria-label="Screen state">
+  <button data-s="listening" aria-pressed="false">Holding OK</button>
+  <button data-s="reply" aria-pressed="true">Reply</button>
+  <button data-s="update" aria-pressed="false">Job update</button>
+  <button data-s="asleep" aria-pressed="false">Asleep</button>
+</div>
+<div class="screen" id="screen" role="img" aria-label="Mock of the satellite e-ink screen"></div>
+<p class="small">A mock of the layout, not a photo: prompt on top, reply in the middle, jobs footer below, all in the same font. Text that does not fit ends in an ellipsis. The content is invented.</p>
+<script>
+  const STATES = {
+    listening: `<div class="center">Listening…<br><span style="font-size:12px">release OK to send</span></div>`,
+    reply: `<div class="prompt">You: what is the build doing on the tidy-up branch?</div>
+            <div class="reply">The build passed on the second attempt. One flaky test failed first and was retried. The coding session is idle and waiting for your review.</div>
+            <div class="footer">Jobs running: 1 (draft the release notes)</div>`,
+    update: `<div class="prompt">You: what is the build doing on the tidy-up branch?</div>
+            <div class="reply">The build passed on the second attempt. One flaky test failed first and was retried. The coding session is idle and waiting for your review.</div>
+            <div class="footer">Job update: release notes drafted and saved. Nothing else running.</div>`,
+    asleep: `<div class="reply">The build passed on the second attempt. One flaky test failed first and was retried…</div>
+             <div class="footer">Asleep since 14:32. Press OK to wake.</div>`,
+  };
+  const screen = document.getElementById("screen");
+  function show(k) { screen.innerHTML = STATES[k];
+    document.querySelectorAll("[data-s]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.s === k))); }
+  document.querySelectorAll("[data-s]").forEach(b => b.addEventListener("click", () => show(b.dataset.s)));
+  show("reply");
+</script>
+</body>
+</html>

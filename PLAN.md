@@ -18,7 +18,7 @@ Goal: mini portfolio complementing LinkedIn. Examples of products and software b
 | podcast-addict-tools | ~/src/podcast-addict-tools | yes (remote) | 2026-09-20 | page says private: confirm |
 | brewfather-mcp | ~/src/brewfather-mcp | yes | 2026-03-20 | |
 | wfh-tax-calculator | ~/src/wfh_tax_calendar_calc | yes | 2026-09-20 | live app linked |
-| election-data | ~/src/election_data | yes | 2026-02-10 | page is a placeholder, repo has no README |
+| election-data | ~/src/auspol/election_data | yes | 2026-02-10 | page is a placeholder, repo has no README |
 | groceries | ~/src/groceries | no remote | 2026-05-04 | private |
 | ost-tools | ~/src/ost-tools (no git) | ? | ? | possibly superseded by structured-context |
 | shed-sensor-display | ~/src/esphome-temp (no git) | no | ? | work in progress |
@@ -47,3 +47,8 @@ Store in each project's page bundle (`content/projects/<name>/index.md` + images
 3. Per-project status (finished / in progress / shelved) and screenshots
 4. Remove or hold back anything not ready (`draft: true`)
 5. Commit, push, set Pages source to GitHub Actions, verify live URL
+
+## Ship list (walkthrough 24 Nov 2026)
+- Done: election-data page written and undrafted; groceries reframed as a weekly discount agent; podcast-addict-tools covers agent ingestion into the wiki; shed-sensor-display undrafted with a photo; Hermes voice agent rewritten shorter and undrafted; live-artifacts links the Hermes marketplace; structured-context has its own page (core, map views, Claude Code plugin, Obsidian plugin)
+- Later: structured-context screenshots and hype video
+- Still to review in the walkthrough: me-next, photo-tools, wfh-tax-calculator, home page and author block
