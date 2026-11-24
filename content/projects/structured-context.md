@@ -1,13 +1,13 @@
 ---
 weight: 20
 title: "Structured Context"
-description: "Schemas, validation and map views for markdown knowledge, built for humans and AI agents to share"
+description: "Schemas, AI-judged rules and map views that keep strategy, playbooks and knowledge coherent in markdown"
 tags: ["typescript", "markdown", "schemas", "agents", "claude-code", "obsidian"]
 ---
 
-Keep your content clean and your thinking clear. structured-context gives a folder of markdown notes a schema, so people and AI agents can work on the same body of knowledge and keep it consistent: knowledge wikis, product and strategy frameworks such as opportunity solution trees and strategy cascades, or any kind of knowledge graph.
+Keep your thinking clear and your content clean. structured-context gives a folder of markdown notes a schema, so people and AI agents can build up a body of thinking together and keep it coherent: a business strategy that ladders from vision and mission down to goals, opportunities and initiatives; a playbook that stays well documented and can be seen whole; or a knowledge wiki that an agent keeps growing.
 
-AI agents write a lot of markdown quickly. Without structure, a knowledge base drifts: missing fields, broken links, notes that don't connect to anything. structured-context catches that drift as it happens, and shows the shape of the whole.
+Structure catches the mechanical drift: missing fields, broken links, notes that connect to nothing. The more interesting part is judgement. Rules can ask a model whether the thinking holds together, so the tool points out inconsistencies and gaps in your reasoning, not just in your formatting.
 
 ## The core
 
@@ -16,13 +16,13 @@ A *space* is a folder of markdown files plus a schema. Notes carry typed frontma
 - **Schema validation** of each note's fields, with JSON Schema.
 - **Structure**: broken links, duplicates, hierarchy rules and orphaned nodes.
 - **Rules** expressed against the graph, with error, warning and info severities, so best-practice advice doesn't fail a build.
-- **Semantic rules** for tests an expression can't do, such as "is this opportunity a customer need, or a solution in disguise?", judged by a model. An eval harness measures each model provider's agreement and stability on labelled cases.
+- **AI-judged rules** for the questions an expression can't answer. Does this goal move its mission forward? Does this opportunity work against the vision above it? Is it a customer need, or a solution in disguise? Would this initiative actually address the need it sits under? Are two sibling goals really the same result, or steps in a sequence? Each rule gives a fixed set of verdicts with their own severities, and can send the surrounding nodes as context. An eval harness measures each model provider's agreement and stability on labelled cases.
 
-Bundled schemas cover knowledge wikis, opportunity solution trees and general strategy. It also renders spaces as Mermaid diagrams and syncs them to Miro.
+Bundled schemas cover strategy (vision, mission, goals, opportunities, solutions, assumptions and experiments), opportunity solution trees and knowledge wikis, and you can write your own. It also renders spaces as Mermaid diagrams and syncs them to Miro.
 
 ## Map views
 
-[Map views](https://github.com/mindsocket/structured-context-map-views) project a space into a visual form (a tree, nested containers or a network) from a short declarative definition, with validation results overlaid on the nodes. The same space can be shown several ways, and a React library renders them in any host: a standalone navigator, a self-contained HTML export, or a Claude artifact.
+[Map views](https://github.com/mindsocket/structured-context-map-views) project a space into a visual form (a tree, nested containers or a network) from a short declarative definition, with validation results overlaid on the nodes, so a strategy or playbook can be seen whole and its weak spots found at a glance. The same space can be shown several ways, and a React library renders them in any host: a standalone navigator, a self-contained HTML export, or a Claude artifact.
 
 ## In Claude Code
 
